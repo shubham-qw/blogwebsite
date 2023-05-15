@@ -1,11 +1,31 @@
 const User = require("../models/user");
+const bcrypt = require('bcrypt');
+
 
 const getUser = async (req,res,next)  => {
     try {
-     const user = await User.find({});
-     res.json({"users" : user});
+        const {email,password} = req.body;
+        
+        const user = await User.findOne({email : email}); 
+
+        if (user) {
+            const checkPassword = await bcrypt.compare(password,user.password);
+            if (checkPassword) {
+                res.status(200);
+                res.json({"message" : "user successfully loged in."});
+            }
+            else {
+                res.status(400);
+                res.json({"message" : "Incorrect password please try again"});
+            }
+        }
+        else {
+            res.status(400);;
+            res.json({"message" : "User not found."})
+        }
     }
     catch (err) {
+        res.status(500);
         next(err);
     }
 }
@@ -14,9 +34,18 @@ const createUser = async (req,res,next) => {
     try {
         const {password,name,email} = req.body;
 
+        const isUser = await User.findOne({email : email});
+
+        if (isUser) {
+            res.status(400);
+            res.json({"message" : "User already exists."});
+        }
+        else {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password,salt);
         const user = new User (
             {
-                password,
+                password : hashedPassword,
                 name,
                 email
             }
@@ -32,8 +61,29 @@ const createUser = async (req,res,next) => {
             next(err);
         })
     }
+    }
     catch (err) {
+        res.status(500);
         next(err);
     }
 }
-module.exports = {createUser, getUser};
+
+const deleteUser = async (req,res,next) => {
+    try {
+        const {userId} = req.params;
+        await User.findByIdAndDelete(userId)
+        .then ((user) => {
+            res.status(200)
+            res.json({"message" : "User deleted successfully", "user" : user});
+        })
+        .catch ((err) => {
+            res.status(400);
+            next(err);
+        })
+    }
+    catch (err) {
+        res.status(500);
+        next(err);
+    }
+}
+module.exports = {createUser, getUser, deleteUser};
