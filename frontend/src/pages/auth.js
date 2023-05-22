@@ -1,16 +1,18 @@
-import { Link } from "react-router-dom"
-import { useState } from "react"
-import "../pages/auth.css"
+import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import Cookies from "universal-cookie";
+import "../pages/auth.css";
+
 
 const newCred = {"password" : "", "name" : "", "email" : ""};
 const oldCred = {"email" : "", "password" : ""};
 
 export default function Auth() {
+    const cookies = new Cookies();
     const [newUser, setNewuser] = useState(false);
     const [cred,setCred] = useState(oldCred);
     const [url,setUrl] = useState("");
-
-    console.log(cred);
+    const navigate = useNavigate();
     function onNewUser() {
         if (newUser) {
             setNewuser(false);
@@ -38,6 +40,14 @@ export default function Auth() {
 
         if (server) {
             alert(server.message);
+            if (server.success) {
+                navigate("/home");
+                console.log(server.token);
+                cookies.set("token", server.token, {
+                    path : "/",
+                    expires : new Date(Date.now() + (1000*86400)) 
+                });
+            }
         }
     }
 
@@ -45,10 +55,22 @@ export default function Auth() {
         setCred({...cred,[e.target.name] : e.target.value});
     }
 
+    const check_auth = async () =>  {
+        const token = cookies.get('token');
+        const response = await fetch("http://localhost:5000?token=" + token);
+        const json = await response.json();
+
+        console.log(json);
+    }
+
+    useEffect(() => {
+        check_auth();
+    })
+
     return (
         <>
-            <div className="authBox w-25 d-flex">
-                <form onSubmit={handleSubmit} className="mx-2 mb-2">
+            <div className="container authBox">
+                <form onSubmit={handleSubmit} className="mx-2 mb-2 m-auto mt-2" style={{"padding" : "20px"}}>
                     {newUser ? <div className="mb-3 mt-2">
                         <label htmlFor="exampleInputName1" className="form-label">Enter Username</label>
                         <input type="text" className="form-control" id="exampleInputName1" value={cred.name} name="name" onChange={onChange}></input>

@@ -8,4 +8,5 @@ router.route("/user")
 router.post("/user/register" , createUser);
 
 router.delete("/user/:userId",deleteUser);
+
 module.exports = router;

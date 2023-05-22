@@ -1,18 +1,23 @@
 const User = require("../models/user");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const secret = process.env.SECRET;
 
+const generateToken = async (userId) => {
+    return await jwt.sign({userId},secret,{expiresIn : "1d"});
+}
 
 const getUser = async (req,res,next)  => {
     try {
         const {email,password} = req.body;
-        
         const user = await User.findOne({email : email}); 
 
         if (user) {
             const checkPassword = await bcrypt.compare(password,user.password);
             if (checkPassword) {
+                const token = await generateToken(user._id);
                 res.status(200);
-                res.json({"message" : "user successfully loged in."});
+                res.json({"success" : true, "message" : "user successfully loged in.", "token" : token});
             }
             else {
                 res.status(400);
@@ -52,9 +57,10 @@ const createUser = async (req,res,next) => {
         )
 
         await user.save()
-        .then ((newUser) => {
+        .then (async (newUser) => {
+            const token = await generateToken(newUser._id);
             res.status(200); 
-            res.json({"message" : "User created successfully", "user" : newUser});
+            res.json({"success" : true, "message" : "User created successfully", "user" : newUser});
         })
         .catch ((err) => {
             res.status(400)
@@ -68,6 +74,7 @@ const createUser = async (req,res,next) => {
     }
 }
 
+
 const deleteUser = async (req,res,next) => {
     try {
         const {userId} = req.params;
@@ -80,6 +87,16 @@ const deleteUser = async (req,res,next) => {
             res.status(400);
             next(err);
         })
+    }
+    catch (err) {
+        res.status(500);
+        next(err);
+    }
+}
+
+const updateUser = (req,res,next) => {
+    try {
+
     }
     catch (err) {
         res.status(500);

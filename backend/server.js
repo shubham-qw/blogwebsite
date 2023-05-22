@@ -1,13 +1,17 @@
 const express = require("express");
+require('dotenv').config();
 const app = express();
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+
 app.use(express.json());
-
+app.use(cookieParser());
 app.use(cors());
-
 const db_connect = require("./db");
 
 db_connect();
+
+app.use(require("./middleware/authentication"));
 
 app.get("/", async (req,res) => {
     res.send("Working");
