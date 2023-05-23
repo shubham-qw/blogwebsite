@@ -11,7 +11,7 @@ const db_connect = require("./db");
 
 db_connect();
 
-app.use(require("./middleware/authentication"));
+app.use("/user",require("./middleware/authentication"));
 
 app.get("/", async (req,res) => {
     res.send("Working");

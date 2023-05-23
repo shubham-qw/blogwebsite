@@ -57,15 +57,18 @@ export default function Auth() {
 
     const check_auth = async () =>  {
         const token = cookies.get('token');
-        const response = await fetch("http://localhost:5000?token=" + token);
+        const response = await fetch("http://localhost:5000/user?token=" + token);
         const json = await response.json();
 
-        console.log(json);
+        if (json.success) {
+            localStorage.setItem("userId", json.userId);
+            navigate("/home");
+        }
     }
 
     useEffect(() => {
         check_auth();
-    })
+    },[])
 
     return (
         <>
