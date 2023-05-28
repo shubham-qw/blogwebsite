@@ -17,7 +17,7 @@ const getUser = async (req,res,next)  => {
             if (checkPassword) {
                 const token = await generateToken(user._id);
                 res.status(200);
-                res.json({"success" : true, "message" : "user successfully loged in.", "token" : token});
+                res.json({"success" : true, "message" : "user successfully loged in.", "token" : token,userId : user._id});
             }
             else {
                 res.status(400);
@@ -28,6 +28,25 @@ const getUser = async (req,res,next)  => {
             res.status(400);;
             res.json({"message" : "User not found."})
         }
+    }
+    catch (err) {
+        res.status(500);
+        next(err);
+    }
+}
+
+const userInfo = async (req,res,next) => {
+    try {
+        const {userId} = req.params;
+        const user = await User.findById(userId);
+
+        if (user) {
+            res.status(200).json({success : true, userName : user.name});
+        }
+        else {
+            res.status(400),json({"msg" : "User not found"});
+        }
+        
     }
     catch (err) {
         res.status(500);
@@ -103,4 +122,4 @@ const updateUser = (req,res,next) => {
         next(err);
     }
 }
-module.exports = {createUser, getUser, deleteUser};
+module.exports = {createUser, getUser, deleteUser,userInfo};

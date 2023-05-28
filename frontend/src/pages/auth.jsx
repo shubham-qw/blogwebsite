@@ -47,6 +47,7 @@ export default function Auth() {
                     path : "/",
                     expires : new Date(Date.now() + (1000*86400)) 
                 });
+                localStorage.setItem("userId", server.userId);         
             }
         }
     }

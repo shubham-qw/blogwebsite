@@ -5,6 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Home from './pages/home';
+import Compose from './pages/compose';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path : "/home",
     element : <Home/>
+  },
+  {
+    path : "/compose",
+    element : <Compose/>
   }
 ]);
 

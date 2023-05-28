@@ -24,6 +24,8 @@ app.get("/shubham", async (req,res) => {
     res.json({users});
 })
 
+app.use("/api", require("./routes/post"));
+
 app.use("/api", require("./routes/user"));
 
 app.use(require("./middleware/error_handler"));
