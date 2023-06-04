@@ -1,12 +1,30 @@
 import { useState } from "react";
 import Navbar from "../components/navbar";
+import { ListGroupItem } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
 
 
 export default function Compose() {
+    const navigate = useNavigate();
     const [post,setPost] = useState({"title" : "", "content" : ""});
 
     const onSubmit = async (e) => {
         e.preventDefault();
+
+        const response = await fetch("http://localhost:5000/api/user/post/" + localStorage.getItem("userId"),{
+            "method" : "POST",
+            "headers" : {
+                "Content-Type" : "application/json"
+            },
+            "body" : JSON.stringify(post)
+        })
+
+        const json = await response.json();
+
+        if (json.success) {
+            navigate('/home')
+        }
     }
 
     function  handlePost(e) {
@@ -15,9 +33,9 @@ export default function Compose() {
     return (
         <>
             <Navbar />
-            <div className="container" style={{"maxWidth" : "1000px"}}>
+            <div className="container" style={{"maxWidth" : "800px", "marginTop" : "100px"}}>
             <h1>Compose</h1>
-            <form>
+            <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label>Title</label>
                     <input className="form-control" type="text" name="title" value={post.title} onChange={handlePost}></input>

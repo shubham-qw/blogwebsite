@@ -12,8 +12,22 @@ const postSchema = new Schema ({
     },
     "userId" : {
         type : Schema.Types.ObjectId,
-        ref : "User"
-    }
+        ref : "User",
+        required : true
+    },
+    "comment" : [
+        {
+            "user" : Schema.Types.ObjectId,
+            "content" : {
+                type : String,
+                default : "No comment"            } 
+        }
+    ],
+    "likes" : [
+        {
+            "user" : Schema.Types.ObjectId
+        }
+    ]
 },{timestamps : true});
 
 module.exports = model ("post",postSchema)
