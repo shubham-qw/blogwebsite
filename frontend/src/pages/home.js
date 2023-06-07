@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { AiOutlineComment } from 'react-icons/ai';
 export default function Home() {
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState({ "name": "" });
     const [comment,setComment] = useState(false)
+    const [write,setWrite] = useState({"content" : ""})
     function onSearch(e) {
         setSearch({ ...search, [e.target.name]: e.target.value })
     }
@@ -36,6 +38,16 @@ export default function Home() {
         else {
             setPosts([])
         }
+    }
+
+    const onWriteSubmit = (e) => {
+        e.preventDefault();
+
+
+    }
+
+    function changeWrite (e) {
+        setWrite({...write,[e.target.name] : e.target.value})
     }
 
 
@@ -70,15 +82,18 @@ export default function Home() {
                                     {post.comment.length != 0 ? post.comment.map((com) => {
                                         return (
                                             <div>
-                                                <p>{com.content}</p>
+                                                <p style={{"textAlign" : "center"}}>{com.content}</p>
                                             </div>
                                         )
                                     }) : ""}
-                                    <div>
-                                        <input></input>
+                                    <div style={{"marginBottom" : "3px"}}>
+                                        <form>    
+                                        <input style={{"width" : "300px"}} type='text' placeholder="Write a comment here" value={write.content} name="content" onChange={changeWrite}></input>
+                                        <button type="submit" className="btn btn-info btn-sm">post comment</button>
+                                        </form>
                                     </div>
                                 </div> : ""}
-                                  <button className="btn mb-5" onClick={setCom}><i style={{"font-size":"24px"}} className='far'>&#xf4ad;</i></button>
+                                  <button className="btn mb-5" onClick={setCom}><AiOutlineComment style={{"fontSize" : "40px"}}/></button>
                             </div>
                         )
                     }) : <h1># Trending Blogs</h1>}

@@ -4,11 +4,11 @@ const {Schema, model} = mongoose;
 const postSchema = new Schema ({
     "title" : {
         type : String,
-        default : "No title"
+        required : true
     },
     "content" : {
         type : String,
-        default : "Empty post"
+        required : true
     },
     "userId" : {
         type : Schema.Types.ObjectId,
@@ -20,7 +20,7 @@ const postSchema = new Schema ({
             "user" : Schema.Types.ObjectId,
             "content" : {
                 type : String,
-                default : "No comment"            } 
+                required : true            } 
         }
     ],
     "likes" : [

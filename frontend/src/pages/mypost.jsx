@@ -1,8 +1,19 @@
 import Navbar from "../components/navbar";
 import { useState,useEffect } from "react";
+import { AiOutlineComment } from 'react-icons/ai';
 export default function MyPost () {
     const [posts,setPosts] = useState([]);
-   
+    const [comment,setComment] = useState(false)
+
+    function setCom() {
+        if (comment) {
+            setComment(false);
+        }
+        else {
+            setComment(true)
+        }
+    }
+
     const load_post= async () => {
         const response = await fetch("http://localhost:5000/api/user/post/" + localStorage.getItem("userId"), {
             "method" : "GET"
@@ -27,7 +38,8 @@ export default function MyPost () {
                     <h2>{post.title}</h2>
                     <p>{post.content}</p>
                     <p>posted on {(post.createdAt)}</p>
-                    <span>{post.likes.length} likes</span>  <button className="btn btn-info">show comments</button>
+                    <p>{post.likes.length} likes</p>
+                    <button className="btn mb-5" style={{"paddingLeft" : "3px","border" : "1px solid black"}}onClick={setCom}>Show Comments  <AiOutlineComment style={{"fontSize" : "40px"}}/></button>
                 </div>
             )
         }
