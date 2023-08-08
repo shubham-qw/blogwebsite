@@ -7,7 +7,7 @@ import {
 import Home from './pages/home';
 import Compose from './pages/compose';
 import MyPost from './pages/mypost';
-
+import SearchProvider from './components/searchContext';
 
 const router = createBrowserRouter([
   {
@@ -31,7 +31,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
+    <SearchProvider>
     <RouterProvider router={router} />
+    </SearchProvider>
     </>
   );
 }

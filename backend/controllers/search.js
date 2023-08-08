@@ -12,7 +12,7 @@ const getResult = async (req,res,next) => {
                 .then ((posts) => {
     
                     res.status(200)
-                    res.json({"success" : true, "posts" : posts});
+                    res.json({"success" : true, "user_id" : user._id});
                 })
             }
             else {

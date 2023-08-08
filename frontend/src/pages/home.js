@@ -5,12 +5,18 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { userState } from "../components/userContext";
 import { AiOutlineComment } from 'react-icons/ai';
+import { searchState, searchDispatch } from "../components/searchContext";
 export default function Home() {
+    
+    const Search = searchState();
+    const dispatch = searchDispatch();
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState({ "name": "" });
     const [comment,setComment] = useState(false)
     const [write,setWrite] = useState({"content" : ""})
+    const [force,setForceRender] = useState(false);
     const user = userState();
+    console.log(Search,"shubham");
     function onSearch(e) {
         setSearch({ ...search, [e.target.name]: e.target.value })
     }
@@ -23,6 +29,20 @@ export default function Home() {
             setComment(true)
         }
     }
+
+    const load_post = async () => {
+        const response = await fetch("http://localhost:5000/api/user/post/" + (!Search.status ?  user._id : Search.id), {
+            "method" : "GET"
+        })
+
+        const json = await response.json();
+
+        if (json.success) {
+            setPosts(json.posts);
+        }
+
+    }
+
     const submitSearch = async () => {
 
         const response = await fetch("http://localhost:5000/api/search", {
@@ -35,7 +55,8 @@ export default function Home() {
 
         const json = await response.json();
         if (json.success) {
-            setPosts(json.posts);
+            dispatch({type : "search", id : json.user_id});
+            setForceRender(force ? false : true);
         }
         else {
             setPosts([])
@@ -64,6 +85,9 @@ export default function Home() {
         setWrite({...write,[e.target.name] : e.target.value})
     }
 
+    useEffect(() => {
+        load_post()
+    },[posts])
 
     return (
         <>
@@ -110,7 +134,7 @@ export default function Home() {
                                   <button className="btn mb-5" onClick={setCom}><AiOutlineComment style={{"fontSize" : "40px"}}/></button>
                             </div>
                         )
-                    }) : <h1># Trending Blogs</h1>}
+                    }) : ""}
                 </div>
             </div>
         </>
