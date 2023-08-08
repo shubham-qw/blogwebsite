@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { userState } from "../components/userContext";
 import { AiOutlineComment } from 'react-icons/ai';
 export default function Home() {
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState({ "name": "" });
     const [comment,setComment] = useState(false)
     const [write,setWrite] = useState({"content" : ""})
+    const user = userState();
     function onSearch(e) {
         setSearch({ ...search, [e.target.name]: e.target.value })
     }
@@ -39,6 +41,18 @@ export default function Home() {
             setPosts([])
         }
     }
+
+    const handleLike = async (id) => {
+        const response = await fetch (`http://localhost:5000/api/like?userId=${user._id}&postId=${id}`, {
+            method : "get",
+        })
+
+        if (response.success) {
+            
+        }
+    }
+
+    
 
     const onWriteSubmit = (e) => {
         e.preventDefault();
@@ -77,7 +91,7 @@ export default function Home() {
                                 <h2>{post.title}</h2>
                                 <p>{post.content}</p>
                                 <p>posted on {(post.createdAt)}</p>
-                                <span>{post.likes.length} likes</span>
+                                <span>{post.likes.length} <button onClick={()=>handleLike(post._id)}>likes</button></span>
                                 { comment ? <div>
                                     {post.comment.length != 0 ? post.comment.map((com) => {
                                         return (

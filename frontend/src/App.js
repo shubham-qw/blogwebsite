@@ -8,6 +8,7 @@ import Home from './pages/home';
 import Compose from './pages/compose';
 import MyPost from './pages/mypost';
 
+
 const router = createBrowserRouter([
   {
     path: "/",

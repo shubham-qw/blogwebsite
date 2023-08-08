@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import Cookies from "universal-cookie";
 import "../pages/auth.css";
-
+import { userState, userDisptach } from "../components/userContext";
 
 const newCred = {"password" : "", "name" : "", "email" : ""};
 const oldCred = {"email" : "", "password" : ""};
@@ -13,6 +13,7 @@ export default function Auth() {
     const [cred,setCred] = useState(oldCred);
     const [url,setUrl] = useState("");
     const navigate = useNavigate();
+    const dispatch = userDisptach();
     function onNewUser() {
         if (newUser) {
             setNewuser(false);
@@ -47,7 +48,9 @@ export default function Auth() {
                     path : "/",
                     expires : new Date(Date.now() + (1000*86400)) 
                 });
-                localStorage.setItem("userId", server.userId);         
+                console.log(server);
+                localStorage.setItem("userId", server.userId); 
+                dispatch({type : "login", user : {name : server.userName, _id : server.userId}});        
             }
         }
     }
