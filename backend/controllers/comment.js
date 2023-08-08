@@ -9,14 +9,13 @@ const postComment = async (req,res,next) => {
         .then (async(post) => {
             if (post) {
                 const obj = {"user" : userId,"content" : content};
-
                 const newArr = post.comment;
                 newArr.push(obj);
                 post.comment = newArr;
                 await post.save()
                 .then ((newPost) => {
                     res.status(201).json({"success" : true, "post" : newPost});
-                })
+                }) 
             }
             else {
                 res.status(400);

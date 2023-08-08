@@ -17,7 +17,7 @@ const getUser = async (req,res,next)  => {
             if (checkPassword) {
                 const token = await generateToken(user._id);
                 res.status(200);
-                res.json({"success" : true, "message" : "user successfully loged in.", "token" : token,userId : user._id});
+                res.json({"success" : true, "message" : "user successfully loged in.", "token" : token,userId : user._id,userName : user.name});
             }
             else {
                 res.status(400);
