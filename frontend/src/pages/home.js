@@ -15,6 +15,7 @@ export default function Home() {
     const [comment,setComment] = useState(false)
     const [write,setWrite] = useState({"content" : ""})
     const [force,setForceRender] = useState(false);
+    const [something,setSomething] = useState({status:false, id : ""});
     const user = userState();
     console.log(Search,"shubham");
     function onSearch(e) {
@@ -31,7 +32,7 @@ export default function Home() {
     }
 
     const load_post = async () => {
-        const response = await fetch("http://localhost:5000/api/user/post/" + (!Search.status ?  user._id : Search.id), {
+        const response = await fetch("http://localhost:5000/api/user/post/" + (!something.status ?  localStorage.getItem("userId") : something.id), {
             "method" : "GET"
         })
 
@@ -55,7 +56,7 @@ export default function Home() {
 
         const json = await response.json();
         if (json.success) {
-            dispatch({type : "search", id : json.user_id});
+            setSomething({id : json.user_id, status : true});
             setForceRender(force ? false : true);
         }
         else {
@@ -68,9 +69,6 @@ export default function Home() {
             method : "get",
         })
 
-        if (response.success) {
-            
-        }
     }
 
     
@@ -127,7 +125,7 @@ export default function Home() {
                                     <div style={{"marginBottom" : "3px"}}>
                                         <form>    
                                         <input style={{"width" : "300px"}} type='text' placeholder="Write a comment here" value={write.content} name="content" onChange={changeWrite}></input>
-                                        <button type="submit" className="btn btn-info btn-sm">post comment</button>
+                                        <button type="button" className="btn btn-info btn-sm">post comment</button>
                                         </form>
                                     </div>
                                 </div> : ""}
