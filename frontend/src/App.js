@@ -7,7 +7,10 @@ import {
 import Home from './pages/home';
 import Compose from './pages/compose';
 import MyPost from './pages/mypost';
-import SearchProvider from './components/searchContext';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 const router = createBrowserRouter([
   {
@@ -31,9 +34,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-    <SearchProvider>
+   
     <RouterProvider router={router} />
-    </SearchProvider>
+  
     </>
   );
 }

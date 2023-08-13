@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import Cookies from "universal-cookie";
 import "../pages/auth.css";
-import { userState, userDisptach } from "../components/userContext";
+import {  useUserDispatch } from "../components/userContext";
 
 const newCred = {"password" : "", "name" : "", "email" : ""};
 const oldCred = {"email" : "", "password" : ""};
@@ -13,7 +13,7 @@ export default function Auth() {
     const [cred,setCred] = useState(oldCred);
     const [url,setUrl] = useState("");
     const navigate = useNavigate();
-    const dispatch = userDisptach();
+    const dispatch = useUserDispatch();
     function onNewUser() {
         if (newUser) {
             setNewuser(false);

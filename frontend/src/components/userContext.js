@@ -24,8 +24,8 @@ export default function UserProvider({children}) {
     )
 }
 
-export const userState = () => useContext(userStateContext);
-export const userDisptach = () => useContext(userDispatchContext);
+export const useUserState = () => useContext(userStateContext);
+export const useUserDispatch = () => useContext(userDispatchContext);
 
 
 

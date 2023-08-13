@@ -1,23 +1,25 @@
 import Navbar from "../components/navbar";
+import * as React from 'react';
 import { useState, useEffect } from "react";
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { userState } from "../components/userContext";
-import { AiOutlineComment } from 'react-icons/ai';
-import { searchState, searchDispatch } from "../components/searchContext";
+import { useUserState } from "../components/userContext";
+import PostCard from "../components/postCard";
+
+
+
+
+
 export default function Home() {
-    
-    const Search = searchState();
-    const dispatch = searchDispatch();
     const [posts, setPosts] = useState([]);
     const [search, setSearch] = useState({ "name": "" });
     const [comment,setComment] = useState(false)
     const [write,setWrite] = useState({"content" : ""})
     const [force,setForceRender] = useState(false);
     const [something,setSomething] = useState({status:false, id : ""});
-    const user = userState();
-    console.log(Search,"shubham");
+    const user = useUserState();
+  
     function onSearch(e) {
         setSearch({ ...search, [e.target.name]: e.target.value })
     }
@@ -108,8 +110,14 @@ export default function Home() {
                 </div>
                 <div style={{"display" : "flex","flexDirection" : "column","justifyContent" : "center", "alignItems" : "center", "marginTop" : "50px"}}>
                     {posts.length != 0 ? posts.map((post) => {
+                        
                         return (
-                            <div className="mt-5" style={{ display: "flex","flexDirection":"column","justifyContent" : "center", "alignItems" : "center",width: "500px", "borderBottom" : "1px solid black"}}>
+                            <div>
+                            <PostCard
+                                post={post}
+                                type={"Viewer"}
+                            />
+                            {/* <div className="mt-5" style={{ display: "flex","flexDirection":"column","justifyContent" : "center", "alignItems" : "center",width: "500px", "borderBottom" : "1px solid black"}}>
                                 <h2>{post.title}</h2>
                                 <p>{post.content}</p>
                                 <p>posted on {(post.createdAt)}</p>
@@ -130,6 +138,7 @@ export default function Home() {
                                     </div>
                                 </div> : ""}
                                   <button className="btn mb-5" onClick={setCom}><AiOutlineComment style={{"fontSize" : "40px"}}/></button>
+                            </div> */}
                             </div>
                         )
                     }) : ""}
