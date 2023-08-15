@@ -34,7 +34,7 @@ export default function Home() {
     }
 
     const load_post = async () => {
-        const response = await fetch("http://localhost:5000/api/user/post/" + (!something.status ?  localStorage.getItem("userId") : something.id), {
+        const response = await fetch("http://localhost:5000/api/user/post?userId=" + localStorage.getItem("userId"), {
             "method" : "GET"
         })
 
@@ -87,13 +87,13 @@ export default function Home() {
 
     useEffect(() => {
         load_post()
-    },[posts])
+    },[])
 
     return (
         <>
             <Navbar name={''} />
-            <div className="container" >
-                <div style={{ "maxWidth": "500px", "margin": "auto" }}>
+            <div className="container" style={{width : "70vw", marginTop : "100px"}}>
+                {/* <div style={{ "maxWidth": "500px", "margin": "auto" }}>
                     <InputGroup>
                         <Form.Control
                             placeholder="search other bloggers"
@@ -107,15 +107,16 @@ export default function Home() {
                             search
                         </Button>
                     </InputGroup>
-                </div>
-                <div style={{"display" : "flex","flexDirection" : "column","justifyContent" : "center", "alignItems" : "center", "marginTop" : "50px"}}>
+                </div> */}
+                <div style={{"display" : "flex", flexWrap : "wrap", justifyContent : "space-evenly"}}>
                     {posts.length != 0 ? posts.map((post) => {
                         
                         return (
-                            <div>
+                            <div style={{margin : "50px", height : 'auto'}}>
                             <PostCard
                                 post={post}
                                 type={"Viewer"}
+                                load={load_post}
                             />
                             {/* <div className="mt-5" style={{ display: "flex","flexDirection":"column","justifyContent" : "center", "alignItems" : "center",width: "500px", "borderBottom" : "1px solid black"}}>
                                 <h2>{post.title}</h2>

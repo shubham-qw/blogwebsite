@@ -59,6 +59,24 @@ const deletePost = async (req,res,next) => {
     }
 } 
 
+const allPost = async (req,res,next) => {
+    try {
+        const {userId} = req.query;
+        await Post.find({"userId" : {$ne : userId}}).populate("userId")
+        .then ((posts) => {
+            res.status(200).json({"success" : true, "posts" : posts});
+        })
+        .catch ((err) => {
+            console.log(err);
+            res.status(400)
+            next(err);
+        })
+    }
+    catch (err){
+        res.status(500);
+        next(err);
+    }
+}
 
 const editPost = async (req,res,next) => {
     try {
@@ -80,4 +98,4 @@ const editPost = async (req,res,next) => {
     }
 }
 
-module.exports = {createPost, getPost, deletePost,editPost}
+module.exports = {createPost, getPost, deletePost,editPost, allPost}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function EditPost({posts,handleClose}) {
+export default function EditPost({posts,handleClose,load}) {
 
     const [post,setPost] = useState({"title" : posts.title, "content" : posts.content});
 
@@ -13,7 +13,7 @@ export default function EditPost({posts,handleClose}) {
             },
             'body' : JSON.stringify(post)
         })
-
+        load();
         handleClose();
     }
 

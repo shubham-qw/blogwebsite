@@ -27,15 +27,17 @@ export default function MyPost () {
     }
     useEffect(() => {
         load_post();
-    }, [posts])
+    }, [])
     return (
         <>
         <Navbar name={''}/>
-        <div className="container">
+        <div  className="container" style={{height : 'auto', display : "flex", flexWrap : "wrap", alignContent : "space-evenly"}}>
         {posts.length != 0 ? posts.map((post) => {
             return (
                 <>
-                <PostCard post={post} type="User" />
+                <div style={{margin : "50px", height : 'auto'}}>
+                <PostCard post={post} type="User" load={load_post}/>
+                </div>
                 {/* <div className="mt-5" style={{maxWidth : "500px"}}>
                     <h2>{post.title}</h2>
                     <p>{post.content}</p>

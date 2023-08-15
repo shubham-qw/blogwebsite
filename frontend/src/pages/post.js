@@ -5,7 +5,7 @@ import { useUserState } from "../components/userContext";
 import { useEffect,useState } from 'react';
 
 
-export default function SeePost({post,type,handleClose}) {
+export default function SeePost({post,type,handleClose,load}) {
     const [comment,setComment] = useState("");
     const user = useUserState();
 
@@ -21,6 +21,7 @@ export default function SeePost({post,type,handleClose}) {
             },
             body: JSON.stringify({content : comment})
         })
+        load();
         handleClose();
     }
     
@@ -28,7 +29,7 @@ export default function SeePost({post,type,handleClose}) {
         await fetch (`http://localhost:5000/api/like?userId=${user._id}&postId=${id}`, {
             method : "get",
         })
-
+        load();
         handleClose();
 
     }

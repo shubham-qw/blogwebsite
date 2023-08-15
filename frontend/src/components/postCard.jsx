@@ -54,7 +54,7 @@ const style1 = {
   p: 4,
 };
 
-export default function PostCard({ post, type }) {
+export default function PostCard({ post, type,load }) {
   const user = useUserState(false);
   const [open, setOpen] = React.useState(false);
   const [open1, setOpen1] = React.useState(false);
@@ -69,6 +69,7 @@ export default function PostCard({ post, type }) {
     await fetch(`http://localhost:5000/api/user/post?id=${id}`, {
       method : "delete"
     })
+    load();
   }
 
   const handleClose1 = () => setOpen1(false);
@@ -90,6 +91,7 @@ export default function PostCard({ post, type }) {
               post={postModal}
               type={type}
               handleClose={handleClose}
+              load={load}
             ></SeePost>
           </Box>
         </Modal>
@@ -103,12 +105,13 @@ export default function PostCard({ post, type }) {
             <EditPost 
             posts={post}
             handleClose={handleClose1}
+            load={load}
             />
           </Box>
         </Modal>
       </div>
-      <Box sx={{ minWidth: 320 }}>
-      <Card sx={{ minWidth: 320, maxWidth: 320 }}>
+      <Box sx={{ minWidth: 500 }}>
+      <Card sx={{ minWidth: 320, maxWidth: 600 }}>
         <CardContent>
           <Typography sx={{ fontSize: 14 , mb: 1.5 }}  color="text.secondary" gutterBottom>
             {post.userId.name}
@@ -116,11 +119,11 @@ export default function PostCard({ post, type }) {
           <Typography variant="h5" sx={{ mb: 1.5 }} component="div">
             {post.title}
           </Typography>
-          {/* <Typography sx={{ mb: 1.5 }}variant="body2">
+          <Typography sx={{ mb: 1.5 }}variant="body2">
           <div style={{display: "flex"}}>
             {post.content}
             </div>  
-          </Typography> */}
+          </Typography>
 
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             {new Date(post.createdAt).toLocaleString()}
@@ -130,7 +133,7 @@ export default function PostCard({ post, type }) {
           <Stack direction="row" spacing={2}>
             <Item>{post.likes.length} <FavoriteIcon /></Item>
             <Item>{post.comment.length} <CommentIcon /></Item>
-            <Item><Button size="small" onClick={() => handleOpen(post)}>Learn More</Button></Item>
+            <Item><Button size="small" onClick={() => handleOpen(post)}>Show More</Button></Item>
           </Stack>
         </CardActions>
         {
