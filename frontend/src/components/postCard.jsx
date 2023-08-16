@@ -77,10 +77,10 @@ export default function PostCard({ post, type,load }) {
   const set_like = () => {
     for (let i=0; i<post.likes.length; i++) {
       if (post.likes[i].user == user._id) {
-        setLike(true);
+        return true;
       }
     }
-
+    return false;
   }
 
   const handleLike = async (id) => {
@@ -88,7 +88,6 @@ export default function PostCard({ post, type,load }) {
         method : "get",
     })
     load();
-    set_like();
     handleClose();
 
 }
@@ -99,7 +98,6 @@ export default function PostCard({ post, type,load }) {
   };
 
  React.useEffect(() => {
-  set_like();
  }) 
   return (
     <>
@@ -154,22 +152,25 @@ export default function PostCard({ post, type,load }) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Stack direction="row" spacing={2}>
-            <div>{type == "User" ?<FavoriteIcon /> : <Button onClick={() =>handleLike(post._id)} startIcon={post.likes.length}>{like ? <FavoriteIcon/> : <FavoriteBorderIcon/>}</Button>}</div>
+          <div style={{display : "flex", width : "100%" }}>
+          <Stack direction="row" spacing={2} style={{display : "flex", width : "100%"}}>
+            <div>{type == "User" ?<FavoriteIcon /> : <Button onClick={() =>handleLike(post._id)} startIcon={post.likes.length}>{set_like() ? <FavoriteIcon/> : <FavoriteBorderIcon/>}</Button>}</div>
             <div><Button onClick={() => handleOpen(post)} startIcon={post.comment.length}><CommentIcon /></Button></div>
             {/* <Item><Button size="small" onClick={() => handleOpen(post)}>Show More</Button></Item> */}
-          </Stack>
-        </CardActions>
-        {
-          type == 'User' ? <ButtonGroup
+            {
+      type == 'User' ?<div style={{marginLeft : "auto"}}> <ButtonGroup
       disableElevation
       variant="contained"
       aria-label="Disabled elevation buttons"
     >
       <Button onClick={handleOpen1}>Edit</Button>
       <Button onClick={()=> {handleDelete(post._id)}}>Delete</Button>
-    </ButtonGroup> : ""
+    </ButtonGroup> </div>: ""
         }
+          </Stack>
+          </div>
+        </CardActions>
+        
       </Card>
       </Box>
     </>

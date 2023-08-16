@@ -79,7 +79,7 @@ const createUser = async (req,res,next) => {
         .then (async (newUser) => {
             const token = await generateToken(newUser._id);
             res.status(200); 
-            res.json({"success" : true, "message" : "User created successfully", "user" : newUser});
+            res.json({"success" : true, "message" : "User successfully created.", "token" : token,userId : user._id,userName : user.name});
         })
         .catch ((err) => {
             res.status(400)

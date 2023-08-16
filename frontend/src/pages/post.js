@@ -19,7 +19,7 @@ export default function SeePost({post,type,handleClose,load}) {
             'headers' : {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({content : comment})
+            body: JSON.stringify({content : comment,userName : localStorage.getItem("userName")})
         })
         load();
         handleClose();
@@ -61,7 +61,10 @@ export default function SeePost({post,type,handleClose,load}) {
            post.comment.length > 0 ? post.comment.map((comment,indx) => {
             return (
                 <div style={{borderBottom : "1px solid black", padding : "5px"}}>
-                    {`${indx+1}. ${comment.content}`}
+                    <dl>
+                        <dt>{comment.userName}</dt>
+                        <dd>{comment.content}</dd>
+                    </dl>
                 </div>
 
             )

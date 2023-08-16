@@ -4,14 +4,14 @@ const postComment = async (req,res,next) => {
     try {
         const {userId,postId} = req.params;
         console.log(req.body);
-        const {content} = req.body;
+        const {content,userName} = req.body;
         console.log(content);
         console.log(userId,postId);
         await Post.findById(postId)
         .then (async(post) => {
             console.log(post);
             if (post) {
-                const obj = {"user" : userId,"content" : content};
+                const obj = {"user" : userId,"content" : content, "userName" : userName};
                 const newArr = post.comment;
                 newArr.push(obj);
                 post.comment = newArr;

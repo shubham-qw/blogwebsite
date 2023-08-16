@@ -33,14 +33,14 @@ export default function Compose() {
     return (
         <>
             <Navbar />
-            <div className="container" style={{"maxWidth" : "800px", "marginTop" : "100px"}}>
-            <h1>Compose</h1>
+            <div className="container" style={{"maxWidth" : "800px", "marginTop" : "30px"}}>
+            <h1 align="center" style={{marginBottom : "20px"}}>Compose</h1>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label>Title</label>
                     <input className="form-control" type="text" name="title" value={post.title} onChange={handlePost}></input>
                         <label>Post</label>
-                        <textarea className="form-control" name="content" value={post.content} onChange={handlePost} rows="5" cols="30"></textarea>
+                        <textarea className="form-control" name="content" value={post.content} onChange={handlePost} rows="8" cols="30"></textarea>
                 </div>
                 <button className="btn btn-primary mt-2" type="submit" name="button">Publish</button>
             </form>

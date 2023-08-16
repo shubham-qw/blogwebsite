@@ -18,6 +18,9 @@ const postSchema = new Schema ({
     "comment" : [
         {
             "user" : Schema.Types.ObjectId,
+            "userName" : {
+                type : String
+            },
             "content" : {
                 type : String,
                 required : true            } 
