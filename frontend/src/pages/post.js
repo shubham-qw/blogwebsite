@@ -51,21 +51,24 @@ export default function SeePost({post,type,handleClose,load}) {
    },[]) 
 
     return (
-        <div>
-        <h1 align="center">{post.title}</h1>
+        <div style={{padding : "10px"}}>
+            <h1 style={{"marginBottom" : "25px"}}>Comments</h1>
+        {/* <h1 align="center">{post.title}</h1>
         <p align="center">{post.content}</p>
-        <p >{type == "Viewer" ?<Button onClick={()=> {handleLike(post._id)}} startIcon={post.likes.length}>{like ? <FavoriteIcon/> : <FavoriteBorderIcon/>}</Button> : <FavoriteIcon/>}</p>
-        {type == "Viewer" ? <div><input type="text" onChange={onHandleChange}></input><Button onClick={()=> {submitComment(post._id)}}>Submit</Button></div> : ""}
+        <p >{type == "Viewer" ?<Button onClick={()=> {handleLike(post._id)}} startIcon={post.likes.length}>{like ? <FavoriteIcon/> : <FavoriteBorderIcon/>}</Button> : <FavoriteIcon/>}</p> */}
+        {type == "Viewer" ? <div style={{"marginBottom" : "20px"}}><input type="text" onChange={onHandleChange} placeholder='Type a comment here'></input><Button onClick={()=> {submitComment(post._id)}}>Submit</Button></div> : ""}
         {
-           post.comment.length > 0 ? post.comment.map((comment) => {
+           post.comment.length > 0 ? post.comment.map((comment,indx) => {
             return (
-                <p>
-                    {comment.content}
-                </p>
+                <div style={{borderBottom : "1px solid black", padding : "5px"}}>
+                    {`${indx+1}. ${comment.content}`}
+                </div>
 
             )
             }) : "No Comments"
         }
+        
+
         </div>
     )
 }

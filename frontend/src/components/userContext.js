@@ -13,7 +13,10 @@ function reducer (state,action) {
 } 
 
 export default function UserProvider({children}) {
-    const [state,dispatch] = useReducer(reducer,{});
+    const [state,dispatch] = useReducer(reducer,{
+        name : localStorage.getItem("userName"),
+        _id : localStorage.getItem("userId")
+    });
 
     return (
         <userDispatchContext.Provider value={dispatch}>

@@ -17,6 +17,7 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import EditPost from './editPost';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -58,6 +59,7 @@ export default function PostCard({ post, type,load }) {
   const user = useUserState(false);
   const [open, setOpen] = React.useState(false);
   const [open1, setOpen1] = React.useState(false);
+  const [like,setLike]  = useState(false);
   const [postModal, setPostModal] = useState({});
   const handleOpen = (post) => {
     setPostModal(post);
@@ -72,11 +74,33 @@ export default function PostCard({ post, type,load }) {
     load();
   }
 
+  const set_like = () => {
+    for (let i=0; i<post.likes.length; i++) {
+      if (post.likes[i].user == user._id) {
+        setLike(true);
+      }
+    }
+
+  }
+
+  const handleLike = async (id) => {
+    await fetch (`http://localhost:5000/api/like?userId=${user._id}&postId=${id}`, {
+        method : "get",
+    })
+    load();
+    set_like();
+    handleClose();
+
+}
+
   const handleClose1 = () => setOpen1(false);
   const handleOpen1 = () => {
     setOpen1(true);
   };
 
+ React.useEffect(() => {
+  set_like();
+ }) 
   return (
     <>
       <div>
@@ -131,9 +155,9 @@ export default function PostCard({ post, type,load }) {
         </CardContent>
         <CardActions>
           <Stack direction="row" spacing={2}>
-            <Item>{post.likes.length} <FavoriteIcon /></Item>
-            <Item>{post.comment.length} <CommentIcon /></Item>
-            <Item><Button size="small" onClick={() => handleOpen(post)}>Show More</Button></Item>
+            <div>{type == "User" ?<FavoriteIcon /> : <Button onClick={() =>handleLike(post._id)} startIcon={post.likes.length}>{like ? <FavoriteIcon/> : <FavoriteBorderIcon/>}</Button>}</div>
+            <div><Button onClick={() => handleOpen(post)} startIcon={post.comment.length}><CommentIcon /></Button></div>
+            {/* <Item><Button size="small" onClick={() => handleOpen(post)}>Show More</Button></Item> */}
           </Stack>
         </CardActions>
         {

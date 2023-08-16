@@ -50,6 +50,7 @@ export default function Auth() {
                 });
                 console.log(server);
                 localStorage.setItem("userId", server.userId); 
+                localStorage.setItem("userName", server.userName)
                 dispatch({type : "login", user : {name : server.userName, _id : server.userId}});        
             }
         }
