@@ -42,10 +42,11 @@ export default function Auth() {
         const server = await response.json();
 
         if (server) {
-           alert(server.message);
+          
             if (server.success) {
+                alert(server.message);
                 toast.success(server.message, {
-                    position: toast.POSITION.TOP_RIGHT
+                    position: toast.POSITION.TOP_CENTER
                 });
                 navigate("/home");
                 console.log(server.token);
@@ -60,7 +61,7 @@ export default function Auth() {
             }
             else {
                 toast.error(server.message, {
-                    position: toast.POSITION.TOP_RIGHT
+                    position: toast.POSITION.TOP_CENTER
                 });
             }
         }
