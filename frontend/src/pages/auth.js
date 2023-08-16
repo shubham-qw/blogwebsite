@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import Cookies from "universal-cookie";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "../pages/auth.css";
 import {  useUserDispatch } from "../components/userContext";
 
@@ -40,8 +42,11 @@ export default function Auth() {
         const server = await response.json();
 
         if (server) {
-            alert(server.message);
+           alert(server.message);
             if (server.success) {
+                toast.success(server.message, {
+                    position: toast.POSITION.TOP_RIGHT
+                });
                 navigate("/home");
                 console.log(server.token);
                 cookies.set("token", server.token, {
@@ -52,6 +57,11 @@ export default function Auth() {
                 localStorage.setItem("userId", server.userId); 
                 localStorage.setItem("userName", server.userName)
                 dispatch({type : "login", user : {name : server.userName, _id : server.userId}});        
+            }
+            else {
+                toast.error(server.message, {
+                    position: toast.POSITION.TOP_RIGHT
+                });
             }
         }
     }
@@ -77,7 +87,9 @@ export default function Auth() {
 
     return (
         <>
+        
             <div className="container authBox">
+            <ToastContainer />
                 <form onSubmit={handleSubmit} className="mx-2 mb-2 m-auto mt-2" style={{"padding" : "20px"}}>
                     {newUser ? <div className="mb-3 mt-2">
                         <label htmlFor="exampleInputName1" className="form-label">Enter Username</label>

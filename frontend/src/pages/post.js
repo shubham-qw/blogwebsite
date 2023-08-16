@@ -3,6 +3,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Button from '@mui/material/Button';
 import { useUserState } from "../components/userContext";
 import { useEffect,useState } from 'react';
+import TextField from '@mui/material/TextField';
 
 
 export default function SeePost({post,type,handleClose,load}) {
@@ -56,11 +57,11 @@ export default function SeePost({post,type,handleClose,load}) {
         {/* <h1 align="center">{post.title}</h1>
         <p align="center">{post.content}</p>
         <p >{type == "Viewer" ?<Button onClick={()=> {handleLike(post._id)}} startIcon={post.likes.length}>{like ? <FavoriteIcon/> : <FavoriteBorderIcon/>}</Button> : <FavoriteIcon/>}</p> */}
-        {type == "Viewer" ? <div style={{"marginBottom" : "20px"}}><input type="text" onChange={onHandleChange} placeholder='Type a comment here'></input><Button onClick={()=> {submitComment(post._id)}}>Submit</Button></div> : ""}
+        {type == "Viewer" ? <div style={{"marginBottom" : "20px"}}><TextField id="standard-basic" style={{width : "60%"}}onChange={onHandleChange} label="Comment" variant="standard" /></div> : ""}
         {
            post.comment.length > 0 ? post.comment.map((comment,indx) => {
             return (
-                <div style={{borderBottom : "1px solid black", padding : "5px"}}>
+                <div style={{ padding : "5px"}}>
                     <dl>
                         <dt>{comment.userName}</dt>
                         <dd>{comment.content}</dd>
@@ -70,8 +71,7 @@ export default function SeePost({post,type,handleClose,load}) {
             )
             }) : "No Comments"
         }
-        
-
+        {type == "Viewer" ? <Button onClick={()=> {submitComment(post._id)}}>Submit</Button> : ""}
         </div>
     )
 }
